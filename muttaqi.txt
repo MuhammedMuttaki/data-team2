@@ -1,0 +1,7 @@
+SELECT DISTINCT Orders.shipcountry as Country, Categories.categoryname from Orders
+
+join 'Order Details' on 'Order Details'.orderid = Orders.OrderID
+JOIN Products ON Products.productid = 'Order Details'.productid
+join Categories on Categories.CategoryID = Products.CategoryID
+
+Order by  Orders.shipcountry
