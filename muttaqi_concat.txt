@@ -1,0 +1,9 @@
+SELECT Orders.shipcountry as Country,
+GROUP_CONCAT( DISTINCT Categories.categoryname) AS Categories,
+count (DISTINCT Categories.CategoryName) as number_of_categories from Orders
+
+join 'Order Details' on 'Order Details'.orderid = Orders.OrderID
+JOIN Products ON Products.productid = 'Order Details'.productid
+join Categories on Categories.CategoryID = Products.CategoryID
+
+GROUP by Orders.shipcountry
