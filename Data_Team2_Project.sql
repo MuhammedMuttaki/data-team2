@@ -28,6 +28,8 @@ INNER JOIN Categories AS c2
 USING (CategoryID)
 GROUP BY 1;
 
+--------------------------------------------------------------------------------------------------------------
+
 -- Task 2: Yearly sales amounts for years 2016, 2017, and 2018; categorized as high, mid, and low, by country.
 
 SELECT o.ShipCountry, 
@@ -62,3 +64,20 @@ USING(OrderID)
 WHERE o.OrderDate BETWEEN '2018-01-01' AND '2018-12-31'
 GROUP BY 1
 ORDER BY SUM((od.UnitPrice - (od.UnitPrice * od.Discount)) * od.Quantity) DESC;
+
+--------------------------------------------------------------------------------------------------------------
+
+-- TASK 3: Listing the top 3 selling products - by M. Muttaqi
+
+SELECT Products.productname AS Product,
+ROUND(SUM(( 'Order Details'.unitprice -( 'Order Details'.unitprice *discount))*quantity), 3) AS Sale_Amount
+FROM 'Order Details'
+
+JOIN Products ON Products.productid = 'Order Details'.productid
+GROUP BY Product
+ORDER BY Sale_Amount DESC
+
+
+-- As a result 'Côte de Blaye', 'Thüringer Rostbratwurst', and 'Raclette Courdavault'  
+-- having each a sale amount of 141396.735, 80368.672, and 71155.7 respectively, are the top 3 selling products 
+
