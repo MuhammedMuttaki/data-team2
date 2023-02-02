@@ -1,0 +1,7 @@
+SELECT Products.productname as Product,
+ROUND(SUM(( 'Order Details'.unitprice -( 'Order Details'.unitprice *discount))*quantity), 3) as Sale_Amount
+from 'Order Details'
+
+JOIN Products on Products.productid = 'Order Details'.productid
+GROUP by Product
+order by Sale_Amount DESC
