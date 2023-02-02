@@ -68,14 +68,14 @@ ORDER BY SUM((od.UnitPrice - (od.UnitPrice * od.Discount)) * od.Quantity) DESC;
 
 -- TASK 3: Listing the top 3 selling products - by M. Muttaqi
 
-SELECT Products.productname AS Product,
-ROUND(SUM(( 'Order Details'.unitprice -( 'Order Details'.unitprice *discount))*quantity), 3) AS Sale_Amount
-FROM 'Order Details'
-
-JOIN Products ON Products.productid = 'Order Details'.productid
+SELECT p.productname AS Product,
+ROUND(SUM((od.unitprice - (od.unitprice * od.discount)) * od.quantity), 2) AS Sale_Amount
+FROM 'Order Details' AS od
+INNER JOIN Products AS p
+ON p.productid = od.productid
 GROUP BY Product
 ORDER BY Sale_Amount DESC
-
+LIMIT 3;
 
 -- As a result 'Côte de Blaye', 'Thüringer Rostbratwurst', and 'Raclette Courdavault'  
--- having each a sale amount of 141396.735, 80368.672, and 71155.7 respectively, are the top 3 selling products 
+-- having each a sale amount of 141396.74, 80368.672, and 71155.7 respectively, are the top 3 selling products 
