@@ -66,7 +66,7 @@ GROUP BY 1
 ORDER BY SUM((od.UnitPrice - (od.UnitPrice * od.Discount)) * od.Quantity) DESC;
 
 
--- TASK 3: Listing the top 3 selling products - by M. Muttaqi
+-- TASK 3: Listing the top 3 selling products
 
 SELECT p.productname AS Product,
 ROUND(SUM((od.unitprice - (od.unitprice * od.discount)) * od.quantity), 2) AS Sale_Amount
