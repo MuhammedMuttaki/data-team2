@@ -128,4 +128,3 @@ Join Products ON Products.ProductID = od.productid
 GROUP BY Country
 HAVING Sale_Amount < 20000
 order by Sale_Amount ASC
-
