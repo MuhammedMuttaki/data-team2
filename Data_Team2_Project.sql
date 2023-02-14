@@ -1,5 +1,5 @@
 -- Exploratory analysis
--- Task 1: Find out countries of customers, and categories sold to each one.
+-- Week-1: Find out countries of customers, and categories sold to each one.
 SELECT COUNT(DISTINCT Country)
 FROM Customers AS c;
 
@@ -30,7 +30,7 @@ GROUP BY 1;
 
 --------------------------------------------------------------------------------------------------------------
 
--- Task 2: Yearly sales amounts for years 2016, 2017, and 2018; categorized as high, mid, and low, by country.
+-- Week-2: Yearly sales amounts for years 2016, 2017, and 2018; categorized as high, mid, and low, by country.
 
 SELECT o.ShipCountry, 
 	   CASE WHEN SUM((od.UnitPrice - (od.UnitPrice * od.Discount)) * od.Quantity) < 7000 THEN "Low"
@@ -66,7 +66,7 @@ GROUP BY 1
 ORDER BY SUM((od.UnitPrice - (od.UnitPrice * od.Discount)) * od.Quantity) DESC;
 
 
--- TASK 3: Listing the top 3 selling products
+-- Week-3: Listing the top 3 selling products
 
 SELECT p.productname AS Product,
 ROUND(SUM((od.unitprice - (od.unitprice * od.discount)) * od.quantity), 2) AS Sale_Amount
@@ -79,3 +79,53 @@ LIMIT 3;
 
 -- As a result 'Côte de Blaye', 'Thüringer Rostbratwurst', and 'Raclette Courdavault'  
 -- having each a sale amount of 141396.74, 80368.672, and 71155.7 respectively, are the top 3 selling products 
+
+
+-- Week-4:
+--Task-1: Generate a report for the number of territories each employee responsible for
+
+SELECT e.FirstName || ' ' || e.LastName AS Employee, 
+COUNT(DISTINCT TerritoryID) AS Territory_Count
+FROM EmployeeTerritories as et
+
+INNER JOIN Employees as e 
+USING(EmployeeID)
+GROUP BY et.EmployeeID 
+ORDER BY 2 DESC;
+
+--Task-2: Generate a report for employee's performance according to sales amount and order them decreasely
+
+SELECT firstname || ' ' || lastname as Employee,
+ROUND(SUM((od.unitprice - (od.unitprice * od.discount)) * od.quantity), 2) AS Sale_Amount 
+from Employees
+
+JOIN Orders on Orders.EmployeeID = Employees.EmployeeID
+JOIN 'Order Details' as od on od.orderid = Orders.OrderID
+
+GROUP by firstname
+order by Sale_Amount DESC
+
+--Task-3: for low-sales regions what is the shipped category there?
+--Part-1 finding the low sale regions:
+SELECT shipcountry AS Country,
+ROUND(SUM((od.unitprice-(od.unitprice*od.discount))*od.quantity), 2) AS Sale_Amount,
+ntile(3) over (order by ROUND(SUM((od.unitprice-(od.unitprice*od.discount))*od.quantity), 2)) Sale_Range
+FROM Orders
+
+JOIN 'Order Details' AS od ON od.orderid = Orders.orderid
+GROUP by Country
+
+--Part-2: Task-3:
+SELECT shipcountry AS Country,
+ROUND(SUM((od.unitprice-(od.unitprice*od.discount))*od.quantity), 2) AS Sale_Amount,
+GROUP_CONCAT(DISTINCT Categories.CategoryName) AS Category
+From Orders
+
+JOIN Categories on Categories.CategoryID = Products.CategoryID
+JOIN 'Order Details' as od ON od.orderid = Orders.orderid
+Join Products ON Products.ProductID = od.productid
+
+GROUP BY Country
+HAVING Sale_Amount < 20000
+order by Sale_Amount ASC
+
