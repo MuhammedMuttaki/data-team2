@@ -84,18 +84,18 @@ LIMIT 3;
 -- Week-4:
 --Task-1: Generate a report for the number of territories each employee responsible for
 
-SELECT e.FirstName || ' ' || e.LastName AS Employee, 
+SELECT e.EmployeeID, e.FirstName || ' ' || e.LastName AS Employee, 
 COUNT(DISTINCT TerritoryID) AS Territory_Count
 FROM EmployeeTerritories as et
 
 INNER JOIN Employees as e 
 USING(EmployeeID)
 GROUP BY et.EmployeeID 
-ORDER BY 2 DESC;
+ORDER BY 3 DESC;
 
 --Task-2: Generate a report for employee's performance according to sales amount and order them decreasely
 
-SELECT firstname || ' ' || lastname as Employee,
+SELECT Employees.EmployeeID, firstname || ' ' || lastname as Employee,
 ROUND(SUM((od.unitprice - (od.unitprice * od.discount)) * od.quantity), 2) AS Sale_Amount 
 from Employees
 
