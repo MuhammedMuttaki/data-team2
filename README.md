@@ -4,3 +4,6 @@
 ### Team Members:
 * Emre CAN
 * Mohammad Muttaqi
+
+### Goal:
+Analyzing and improving Northwind's sales.
